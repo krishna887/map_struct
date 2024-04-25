@@ -13,6 +13,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.elasticsearch.client.elc.ElasticsearchTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 public class BookServiceImpl implements BookService {
@@ -24,7 +28,8 @@ private final BookMapper bookMapper;
 
     @Override
     public BookResponse create(BookRequest bookRequest) {
-//
+//I have used the StructMapper so this builder pattern is not needed
+
 //        Book books= Book.builder()
 //                .isbn(bookRequest.isbn())
 //                .authorName(bookRequest.authorName())
@@ -39,6 +44,13 @@ var books=bookMapper.bookRequestToBook(bookRequest);
 //             return  modelMapper.map(books, BookResponse.class);
 //        return BookResponse.toBookResponse(books);
 
+    }
+
+    @Override
+    public List<BookResponse> findAll() {
+        List<Book> list= new ArrayList<>();
+       bookRepository.findAll().forEach(list::add);
+       return list.stream().map(bookMapper::bookToBookResponse).collect(Collectors.toList());
     }
 //    public List<Book> findByTitleAndAuthor(String title, String author) {
 //        var criteria = QueryBuilders.bool(builder -> builder.must(
