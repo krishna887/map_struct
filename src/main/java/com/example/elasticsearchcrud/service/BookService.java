@@ -12,4 +12,5 @@ public interface BookService {
     BookResponse create(BookRequest bookRequest);
     List<BookResponse> findAll();
     Optional<BookResponse> findById(String id);
+    List<BookResponse> findByTitleAndAuthor(String title, String author);
 }

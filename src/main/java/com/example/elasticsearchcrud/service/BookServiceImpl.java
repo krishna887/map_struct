@@ -3,7 +3,9 @@ package com.example.elasticsearchcrud.service;
 
 
 import static co.elastic.clients.elasticsearch._types.query_dsl.QueryBuilders.match;
+import static co.elastic.clients.elasticsearch._types.query_dsl.QueryBuilders.matchPhrase;
 
+import co.elastic.clients.elasticsearch._types.query_dsl.QueryBuilders;
 import com.example.elasticsearchcrud.dtos.BookRequest;
 import com.example.elasticsearchcrud.dtos.BookResponse;
 import com.example.elasticsearchcrud.mapper.BookMapper;
@@ -11,7 +13,9 @@ import com.example.elasticsearchcrud.model.Book;
 import com.example.elasticsearchcrud.repository.BookRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.elasticsearch.client.elc.ElasticsearchTemplate;
+import org.springframework.data.elasticsearch.client.elc.NativeQuery;
 import org.springframework.stereotype.Service;
+import org.springframework.data.elasticsearch.core.SearchHit;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,15 +70,20 @@ var books=bookMapper.bookRequestToBook(bookRequest);
         else return Optional.empty();
        
     }
-//    public List<Book> findByTitleAndAuthor(String title, String author) {
+    public List<BookResponse> findByTitleAndAuthor(String title, String author) {
+        
+        var books=bookRepository.getBookByAuthorNameAndTitle(author,title);
+        return books.stream().map(bookMapper::bookToBookResponse).toList();
 //        var criteria = QueryBuilders.bool(builder -> builder.must(
-//                match(queryAuthor -> queryAuthor.field("authorName").query(author)),
-//                match(queryTitle -> queryTitle.field("title").query(title))
+//                matchPhrase(queryAuthor -> queryAuthor.field("authorName").query(author)),
+//                matchPhrase(queryTitle -> queryTitle.field("title").query(title))
 //        ));
 //
-//        return elasticsearchTemplate.search(NativeQuery.builder().withQuery(criteria).build(), Book.class)
+//        var response=elasticsearchTemplate.search(NativeQuery.builder().withQuery(criteria).build(), Book.class)
 //                .stream().map(SearchHit::getContent).toList();
-//    }
+//
+//        return response.stream().map(bookMapper::bookToBookResponse).toList();
+    }
 //
 
 }

@@ -43,8 +43,17 @@ public ResponseEntity<GenericResponse<BookResponse>> createBook(@RequestBody Boo
 @GetMapping("{id}")
     public ResponseEntity<GenericResponse<BookResponse>> getBookById(@PathVariable ("id") String id){
     return ResponseEntity.status(HttpStatus.CREATED)
-            .header("costum headers can pssed here")
+            .header("costum headers can passed here")
             .body( GenericResponse.success(bookService.findById(id).orElse(null),"Get book by id"));
+}
+
+@GetMapping("/query")
+    public GenericResponse<List<BookResponse>>getBookByTitleAndAuthor(@RequestParam ("title") String title, @RequestParam ("author")String author){
+    return GenericResponse.<List<BookResponse>>builder()
+            .message("Getting all Books matching title and author")
+            .status(true)
+            .data(bookService.findByTitleAndAuthor(title, author))
+            .build();
 }
 
 
