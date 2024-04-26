@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -52,6 +53,19 @@ var books=bookMapper.bookRequestToBook(bookRequest);
        bookRepository.findAll().forEach(list::add);
        return list.stream().map(bookMapper::bookToBookResponse).collect(Collectors.toList());
     }
+
+    @Override
+    public Optional<BookResponse> findById(String id) {
+//      var bookOpt=  bookRepository.findById(id).stream().map(bookMapper::bookToBookResponse).findFirst().orElse(null);
+//      return Optional.ofNullable(bookOpt);
+        var bookOpt=bookRepository.findById(id);
+        if(bookOpt.isPresent()) {
+//        return bookMapper.mapToResponseOptional(bookOpt);
+            return bookOpt.map(bookMapper::bookToBookResponse);
+        }
+        else return Optional.empty();
+       
+    }
 //    public List<Book> findByTitleAndAuthor(String title, String author) {
 //        var criteria = QueryBuilders.bool(builder -> builder.must(
 //                match(queryAuthor -> queryAuthor.field("authorName").query(author)),
@@ -62,8 +76,6 @@ var books=bookMapper.bookRequestToBook(bookRequest);
 //                .stream().map(SearchHit::getContent).toList();
 //    }
 //
-//    public Optional<Book> findBookById(String id) {
-//       return bookRepository.findById(id);
-//    }
+
 }
 

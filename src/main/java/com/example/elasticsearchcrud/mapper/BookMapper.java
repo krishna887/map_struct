@@ -6,6 +6,8 @@ import com.example.elasticsearchcrud.model.Book;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+import java.util.Optional;
+
 @Mapper(componentModel = "spring")
 public interface BookMapper {
 Book bookRequestToBook(BookRequest bookRequest);
