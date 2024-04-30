@@ -18,15 +18,16 @@ public record BookResponse(
 
         String isbn) implements Serializable {
 
+//I have used the MapStruct so this builder pattern is not needed
 
-    public static BookResponse toBookResponse(Book book){
-        return BookResponse.builder()
-                .id(book.getId())
-                .title(book.getTitle())
-                .authorName(book.getAuthorName())
-                .isbn(book.getIsbn())
-                .publicationYear(book.getPublicationYear())
-                .build();
-    }
+//    public static BookResponse toBookResponse(Book book){
+//        return BookResponse.builder()
+//                .id(book.getId())https://docs.spring.io/spring-data/elasticsearch/docs/1.0.0.M1/reference/pdf/spring-data-elasticsearch-reference.pdf
+//                .title(book.getTitle())
+//                .authorName(book.getAuthorName())
+//                .isbn(book.getIsbn())
+//                .publicationYear(book.getPublicationYear())
+//                .build();
+//    }
 
 }
