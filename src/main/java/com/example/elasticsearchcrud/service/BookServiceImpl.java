@@ -5,6 +5,7 @@ package com.example.elasticsearchcrud.service;
 
 import com.example.elasticsearchcrud.dtos.BookRequest;
 import com.example.elasticsearchcrud.dtos.BookResponse;
+import com.example.elasticsearchcrud.exception.custom.BookNotFoundException;
 import com.example.elasticsearchcrud.mapper.BookMapper;
 import com.example.elasticsearchcrud.model.Book;
 import com.example.elasticsearchcrud.repository.BookRepository;
@@ -62,6 +63,23 @@ var books=bookMapper.bookRequestToBook(bookRequest);
         }
         else return Optional.empty();
        
+    }
+
+    @Override
+    public BookResponse update(BookRequest bookRequest) {
+        var books=bookMapper.bookRequestToBook(bookRequest);
+        bookRepository.save(books);
+        return     bookMapper.bookToBookResponse(books);
+
+    }
+
+    @Override
+    public void delete(long id) {
+        var bookOpt=bookRepository.findById(id);
+        if(bookOpt.isPresent()) {
+            bookRepository.deleteById(id);
+        }
+        else throw new BookNotFoundException("book of this id is not found");
     }
 
 

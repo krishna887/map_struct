@@ -2,6 +2,7 @@ package com.example.elasticsearchcrud.controller;
 
 import com.example.elasticsearchcrud.dtos.BookRequest;
 import com.example.elasticsearchcrud.dtos.BookResponse;
+import com.example.elasticsearchcrud.exception.custom.BookNotFoundException;
 import com.example.elasticsearchcrud.service.BookService;
 import com.example.elasticsearchcrud.utill.GenericResponse;
 import lombok.RequiredArgsConstructor;
@@ -17,15 +18,22 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BookController {
     private final BookService bookService;
+//
+//    @ExceptionHandler(BookNotFoundException.class)
+//    public ResponseEntity<String> handleBookNotFoundException(BookNotFoundException e) {
+//        return new ResponseEntity<>("Book Not found: " + e.getMessage(), HttpStatus.BAD_REQUEST);
+//    }
+
+    @ExceptionHandler(BookNotFoundException.class)
+    public ResponseEntity<String> handleResourceNotFoundException(BookNotFoundException e) {
+        return new ResponseEntity<>("Resource not found: " + e.getMessage(), HttpStatus.NOT_FOUND);
+    }
+    @GetMapping("/custom")
+    public ResponseEntity<String> customException() {
+        throw new BookNotFoundException("Book not found exception is called");
+    }
     @PostMapping("/create")
 public ResponseEntity<GenericResponse<BookResponse>> createBook(@RequestBody BookRequest bookRequest) {
-//       this is the type of generic response sending process
-//
-//        return GenericResponse.<BookResponse>builder()
-//                .message("Book Created Successfully")
-//                .status(true)
-//                .data(bookService.create(bookRequest))
-//                .build();
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .header("costum headers can pssed here")
@@ -44,12 +52,19 @@ public ResponseEntity<GenericResponse<BookResponse>> createBook(@RequestBody Boo
     public ResponseEntity<GenericResponse<BookResponse>> getBookById(@PathVariable ("id") long id){
     return ResponseEntity.status(HttpStatus.CREATED)
             .header("costum headers can pssed here")
-            .body( GenericResponse.success(bookService.findById(id).orElse(null),"Get book by id"));
+            .body( GenericResponse.success(bookService.findById(id).orElseThrow(null),"Get book by id"));
 }
 
 
+@PutMapping("/update")
+public ResponseEntity<GenericResponse<BookResponse>> updateBook(@RequestBody BookRequest bookRequest) {
 
+    return ResponseEntity.status(HttpStatus.CREATED)
+            .body( GenericResponse.success(bookService.update(bookRequest),"Book updated Successfully"));
 
-
-
+}
+@DeleteMapping("/deleted")
+public ResponseEntity deleteBook(@PathVariable ("id") long id) {
+        return ResponseEntity.ok("book deleted successfully");
+    }
 }
