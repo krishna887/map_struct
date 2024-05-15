@@ -40,7 +40,7 @@ public ResponseEntity<GenericResponse<BookResponse>> createBook(@RequestBody Boo
                 .data(bookService.findAll())
                 .build();
 }
-@GetMapping("{id}")
+@GetMapping("/{id}")
     public ResponseEntity<GenericResponse<BookResponse>> getBookById(@PathVariable ("id") String id){
     return ResponseEntity.status(HttpStatus.CREATED)
             .header("costum headers can pssed here")

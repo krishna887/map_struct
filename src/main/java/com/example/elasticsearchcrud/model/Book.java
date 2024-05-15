@@ -1,18 +1,18 @@
 package com.example.elasticsearchcrud.model;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.elasticsearch.annotations.Document;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Document(indexName = "books")
+@Entity
 public class Book {
-
     @Id
     private String id;
 
