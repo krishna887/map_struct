@@ -52,7 +52,7 @@ var books=bookMapper.bookRequestToBook(bookRequest);
     }
 
     @Override
-    public Optional<BookResponse> findById(String id) {
+    public Optional<BookResponse> findById(Long id) {
 //      var bookOpt=  bookRepository.findById(id).stream().map(bookMapper::bookToBookResponse).findFirst().orElse(null);
 //      return Optional.ofNullable(bookOpt);
         var bookOpt=bookRepository.findById(id);
