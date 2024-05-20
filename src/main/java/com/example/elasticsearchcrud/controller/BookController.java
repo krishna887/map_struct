@@ -52,7 +52,7 @@ public ResponseEntity<GenericResponse<BookResponse>> createBook(@RequestBody Boo
     public ResponseEntity<GenericResponse<BookResponse>> getBookById(@PathVariable ("id") long id){
     return ResponseEntity.status(HttpStatus.CREATED)
             .header("costum headers can pssed here")
-            .body( GenericResponse.success(bookService.findById(id).orElseThrow(null),"Get book by id"));
+            .body( GenericResponse.success(bookService.findById(id).orElse(null),"Get book by id"));
 }
 
 
@@ -63,7 +63,7 @@ public ResponseEntity<GenericResponse<BookResponse>> updateBook(@RequestBody Boo
             .body( GenericResponse.success(bookService.update(bookRequest),"Book updated Successfully"));
 
 }
-@DeleteMapping("/deleted")
+@DeleteMapping("/delete/{id}")
 public ResponseEntity deleteBook(@PathVariable ("id") long id) {
         return ResponseEntity.ok("book deleted successfully");
     }
