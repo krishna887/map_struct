@@ -34,7 +34,7 @@ public class BookController {
     }
     @PostMapping("/create")
 public ResponseEntity<GenericResponse<BookResponse>> createBook(@RequestBody BookRequest bookRequest) {
-
+        System.out.println("first or second");
         return ResponseEntity.status(HttpStatus.CREATED)
                 .header("costum headers can pssed here")
                 .body( GenericResponse.success(bookService.create(bookRequest),"Book Created Successfully"));
