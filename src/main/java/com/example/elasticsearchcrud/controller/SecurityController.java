@@ -4,6 +4,7 @@ import com.example.elasticsearchcrud.dtos.LoginRequest;
 import com.example.elasticsearchcrud.dtos.LoginResponse;
 import com.example.elasticsearchcrud.jwt.JwtUtils;
 import com.example.elasticsearchcrud.model.User;
+import com.example.elasticsearchcrud.service.AuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,31 +28,18 @@ import java.util.stream.Collectors;
 @RestController
 @RequiredArgsConstructor
 public class SecurityController {
+    private final AuthenticationService authService;
+
 
     private  final  AuthenticationManager authenticationManager;
    private  final JwtUtils jwtUtils;
-   @PostMapping("/signin")
-    public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest loginRequest){
-       Authentication authentication;
-       try{
-           authentication=authenticationManager.authenticate(
-                   new UsernamePasswordAuthenticationToken(loginRequest.getUsername(),loginRequest.getPassword()));
-       }catch (AuthenticationException e){
-           Map<String ,Object> map= new HashMap<>();
-           map.put("message","Bad credentials");
-           map.put("status",false);
-           return new ResponseEntity<Object>(map, HttpStatus.NOT_FOUND);
-       }
-       SecurityContextHolder.getContext().setAuthentication(authentication);
-       UserDetails userDetails= (UserDetails) authentication.getPrincipal();
-       String jwtToken= jwtUtils.generateTokenFromUsername(userDetails);
-       List<String> roles = new ArrayList<>();
-       for (GrantedAuthority item : userDetails.getAuthorities()) {
-           String authority = item.getAuthority();
-           roles.add(authority);
-       }
-       LoginResponse loginResponse= new LoginResponse(jwtToken, userDetails.getUsername(), roles);
-       return ResponseEntity.ok(loginResponse);
+    @PostMapping("/register")
+    public ResponseEntity<LoginResponse> register(@RequestBody User request) {
+        return ResponseEntity.ok(authService.register(request));
+    }
+   @PostMapping("/login")
+   public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) {
+       return ResponseEntity.ok(authService.login(request));
    }
 
 

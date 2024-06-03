@@ -1,4 +1,5 @@
 package com.example.elasticsearchcrud.jwt;
+import com.example.elasticsearchcrud.model.User;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
@@ -37,10 +38,10 @@ public class JwtUtils {
 
     }
 
-    public String generateTokenFromUsername(UserDetails userDetails){
-        String userName=userDetails.getUsername();
+    public String generateTokenFromUsername(User user){
+
         return Jwts.builder()
-                .subject(userName)
+                .subject(user.getUsername())
                 .issuedAt(new Date())
                 .expiration(new Date((new Date()).getTime()+jwtExpirationMs))
                 .signWith(Key())
@@ -59,7 +60,9 @@ public class JwtUtils {
     }
     public boolean validateJwtToken(String authToken){
         try {
-            Jwts.parser().verifyWith((SecretKey) Key() ).build().parseSignedClaims(authToken);
+            Jwts.parser()
+                    .verifyWith((SecretKey) Key() )
+                    .build().parseSignedClaims(authToken);
             return true;
         }catch (MalformedJwtException e){
             logger.error("Invalid Jwt token : {}",e.getMessage());
