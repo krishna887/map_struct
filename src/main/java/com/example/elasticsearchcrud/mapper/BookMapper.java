@@ -14,8 +14,6 @@ Book bookRequestToBook(BookRequest bookRequest);
 BookRequest bookToBookRequest(Book book);
 Book bookResponseToBook(BookResponse bookResponse);
 BookResponse bookToBookResponse(Book book);
-//@Mapping(target = "id", ignore = true)
-//    BookRequest createBookRequestWithoutId(Book book);
 
 
 }
