@@ -14,33 +14,19 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/v1/books")
+@RequestMapping("api/books")
 @RequiredArgsConstructor
 public class BookController {
     private final BookService bookService;
-//
-//    @ExceptionHandler(BookNotFoundException.class)
-//    public ResponseEntity<String> handleBookNotFoundException(BookNotFoundException e) {
-//        return new ResponseEntity<>("Book Not found: " + e.getMessage(), HttpStatus.BAD_REQUEST);
-//    }
 
-    @ExceptionHandler(BookNotFoundException.class)
-    public ResponseEntity<String> handleResourceNotFoundException(BookNotFoundException e) {
-        return new ResponseEntity<>("Resource not found: " + e.getMessage(), HttpStatus.NOT_FOUND);
-    }
-    @GetMapping("/custom")
-    public ResponseEntity<String> customException() {
-        throw new BookNotFoundException("Book not found exception is called");
-    }
-    @PostMapping("/create")
+    @PostMapping("/")
 public ResponseEntity<GenericResponse<BookResponse>> createBook(@RequestBody BookRequest bookRequest) {
-        System.out.println("first or second");
         return ResponseEntity.status(HttpStatus.CREATED)
                 .header("costum headers can pssed here")
                 .body( GenericResponse.success(bookService.create(bookRequest),"Book Created Successfully"));
 
 }
-@GetMapping("/all-books")
+@GetMapping("/")
     public GenericResponse<List<BookResponse>>findAll(){
         return GenericResponse.<List<BookResponse>>builder()
                 .message("Getting all Books")
@@ -63,8 +49,8 @@ public ResponseEntity<GenericResponse<BookResponse>> updateBook(@RequestBody Boo
             .body( GenericResponse.success(bookService.update(bookRequest),"Book updated Successfully"));
 
 }
-@DeleteMapping("/deleted")
-public ResponseEntity deleteBook(@PathVariable ("id") long id) {
+@DeleteMapping("/{id}")
+public ResponseEntity deleteBook(@PathVariable  long id) {
         return ResponseEntity.ok("book deleted successfully");
     }
 }

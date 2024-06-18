@@ -1,2 +1,12 @@
-package com.example.elasticsearchcrud.repository;public interface AppUserRepository {
+package com.example.elasticsearchcrud.repository;
+
+import com.example.elasticsearchcrud.model.AppUser;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.Optional;
+
+public interface AppUserRepository extends JpaRepository<AppUser, Long> {
+
+    Optional<AppUser> findByUsername(String username);
+    Boolean existsByUsername(String username);
 }
