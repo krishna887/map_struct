@@ -1,5 +1,8 @@
 package com.example.elasticsearchcrud.config;
 
+import com.example.elasticsearchcrud.security.JwtAuthEntryPoint;
+import com.example.elasticsearchcrud.security.JwtAuthenticationFilter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -20,8 +23,10 @@ import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
-
+    private final JwtAuthEntryPoint authEntryPoint;
+    private final JwtAuthenticationFilter filter;
 
         @Bean
         public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -33,11 +38,12 @@ public class SecurityConfig {
 //                            .requestMatchers(HttpMethod.PUT,"/hi").hasAnyAuthority(USER)
                             .anyRequest()
                             .authenticated())
-                    .httpBasic(withDefaults())
+//                    .httpBasic(withDefaults())
 //                    .userDetailsService(userDetailsService)
                     .sessionManagement(session->session
                             .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-//                    .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+                    .exceptionHandling(exception->exception.authenticationEntryPoint(authEntryPoint))
+                    .addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class)
                     .build();
 
         }

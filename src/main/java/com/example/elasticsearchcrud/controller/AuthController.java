@@ -1,5 +1,6 @@
 package com.example.elasticsearchcrud.controller;
 
+import com.example.elasticsearchcrud.dtos.AuthResponseDto;
 import com.example.elasticsearchcrud.dtos.LoginDto;
 import com.example.elasticsearchcrud.dtos.RegisterDto;
 import com.example.elasticsearchcrud.service.AuthService;
@@ -24,7 +25,7 @@ public class AuthController {
       return ResponseEntity.ok().body(service.register(registerDto));
     }
     @PostMapping("/login")
-    public ResponseEntity<String> loginUser(@RequestBody LoginDto loginDto){
+    public ResponseEntity<AuthResponseDto> loginUser(@RequestBody LoginDto loginDto){
         return ResponseEntity.ok().body(service.login(loginDto));
 
     }

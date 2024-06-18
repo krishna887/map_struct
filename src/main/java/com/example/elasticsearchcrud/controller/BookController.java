@@ -20,7 +20,7 @@ public class BookController {
     private final BookService bookService;
 
     @PostMapping("/")
-public ResponseEntity<GenericResponse<BookResponse>> createBook(@RequestBody BookRequest bookRequest) {
+       public ResponseEntity<GenericResponse<BookResponse>> createBook(@RequestBody BookRequest bookRequest) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .header("costum headers can pssed here")
                 .body( GenericResponse.success(bookService.create(bookRequest),"Book Created Successfully"));
@@ -50,7 +50,7 @@ public ResponseEntity<GenericResponse<BookResponse>> updateBook(@RequestBody Boo
 
 }
 @DeleteMapping("/{id}")
-public ResponseEntity deleteBook(@PathVariable  long id) {
+public ResponseEntity<?> deleteBook(@PathVariable  long id) {
         return ResponseEntity.ok("book deleted successfully");
     }
 }

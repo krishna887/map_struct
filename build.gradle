@@ -28,6 +28,9 @@ dependencies {
 	// https://mvnrepository.com/artifact/org.mapstruct/mapstruct
 	implementation group: 'org.mapstruct', name: 'mapstruct', version: '1.5.5.Final'
 	annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
+	// https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt
+	implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.12.5'
+
 
 
 
