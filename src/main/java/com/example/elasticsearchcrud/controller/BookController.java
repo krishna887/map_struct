@@ -26,7 +26,7 @@ public class BookController {
                 .body( GenericResponse.success(bookService.create(bookRequest),"Book Created Successfully"));
 
 }
-@GetMapping("/")
+    @GetMapping("/")
     public GenericResponse<List<BookResponse>>findAll(){
         return GenericResponse.<List<BookResponse>>builder()
                 .message("Getting all Books")
@@ -34,7 +34,7 @@ public class BookController {
                 .data(bookService.findAll())
                 .build();
 }
-@GetMapping("/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<GenericResponse<BookResponse>> getBookById(@PathVariable ("id") long id){
     return ResponseEntity.status(HttpStatus.CREATED)
             .header("costum headers can pssed here")
@@ -42,15 +42,16 @@ public class BookController {
 }
 
 
-@PutMapping("/update")
-public ResponseEntity<GenericResponse<BookResponse>> updateBook(@RequestBody BookRequest bookRequest) {
+    @PutMapping("/update")
+    public ResponseEntity<GenericResponse<BookResponse>> updateBook(@RequestBody BookRequest bookRequest) {
 
     return ResponseEntity.status(HttpStatus.CREATED)
             .body( GenericResponse.success(bookService.update(bookRequest),"Book updated Successfully"));
 
 }
-@DeleteMapping("/{id}")
-public ResponseEntity<?> deleteBook(@PathVariable  long id) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteBook(@PathVariable  long id) {
+        bookService.delete(id);
         return ResponseEntity.ok("book deleted successfully");
     }
 }
